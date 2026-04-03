@@ -141,9 +141,7 @@ const initializeDatabase = async () => {
       await post3.save();
     }
 
-    console.log("Database initialized successfully");
   } catch (error) {
-    console.error("Error initializing database:", error.message);
     throw error;
   }
 };

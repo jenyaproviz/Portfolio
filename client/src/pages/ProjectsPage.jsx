@@ -7,63 +7,33 @@ import { SiReact, SiNodedotjs, SiMongodb, SiJavascript, SiTailwindcss, SiRedux, 
 const projectsData = [
   {
     id: 1,
-    title: "Portfolio & Blog Platform",
-    description: "A full-stack blog and portfolio website built with React and Node.js. Features user authentication, post management, dark theme, and responsive design.",
-    image: "/api/placeholder/600/300",
-    technologies: ["React", "Node.js", "MongoDB", "Redux", "Tailwind CSS", "Express"],
-    githubUrl: "https://github.com/yourusername/portfolio-blog",
-    liveUrl: "https://yourportfolio.com",
+    title: "Blog Platform",
+    description: "A full-stack blog website built with React and Node.js. Features user authentication, post management, dark theme, and responsive design.",
+    image: "/project-images/Blog_img.png",
+    technologies: ["React", "TypeScript", "Node.js", "MongoDB", "Redux", "Tailwind CSS", "Express"],
+    githubUrl: "https://github.com/jenyaproviz/Final-Project-Blog-main.git",
+    liveUrl: "https://final-project-blog-main.vercel.app/",
     category: "Full Stack"
   },
   {
     id: 2,
-    title: "E-Commerce Dashboard",
-    description: "Admin dashboard for e-commerce management with real-time analytics, inventory management, and order tracking. Built with modern React patterns.",
-    image: "/api/placeholder/600/300",
-    technologies: ["React", "Redux", "Chart.js", "Tailwind CSS"],
-    githubUrl: "https://github.com/yourusername/ecommerce-dashboard",
-    liveUrl: "https://dashboard-demo.com",
+    title: "Raven Game",
+    description: "Small JavaScript canvas game where you click flying ravens to score points.",
+    image: "/project-images/Raven_game_img.png",
+    technologies: ["JavaScript", "CSS3", "HTML5"],
+    githubUrl: "https://github.com/jenyaproviz/Raven-game.git",
+    liveUrl: "https://jenyaproviz.github.io/Raven-game/",
     category: "Frontend"
   },
   {
     id: 3,
-    title: "Task Management API",
-    description: "RESTful API for task management with user authentication, role-based access control, and real-time notifications using WebSockets.",
-    image: "/api/placeholder/600/300",
-    technologies: ["Node.js", "Express", "MongoDB", "Socket.io", "JWT"],
-    githubUrl: "https://github.com/yourusername/task-api",
-    liveUrl: null,
-    category: "Backend"
-  },
-  {
-    id: 4,
-    title: "Weather App",
-    description: "Beautiful weather application with location-based forecasts, interactive maps, and detailed weather analytics. Responsive design for all devices.",
-    image: "/api/placeholder/600/300",
-    technologies: ["React", "JavaScript", "CSS3", "Weather API"],
-    githubUrl: "https://github.com/yourusername/weather-app",
-    liveUrl: "https://weather-app-demo.com",
-    category: "Frontend"
-  },
-  {
-    id: 5,
-    title: "Docker Microservices",
+    title: "Musician Site",
     description: "Microservices architecture implementation using Docker containers, with service discovery, load balancing, and monitoring.",
-    image: "/api/placeholder/600/300",
-    technologies: ["Docker", "Node.js", "Python", "MongoDB", "Redis"],
-    githubUrl: "https://github.com/yourusername/microservices",
-    liveUrl: null,
-    category: "DevOps"
-  },
-  {
-    id: 6,
-    title: "Chat Application",
-    description: "Real-time chat application with private messaging, group chats, file sharing, and emoji support. Built with Socket.io for real-time communication.",
-    image: "/api/placeholder/600/300",
-    technologies: ["React", "Node.js", "Socket.io", "MongoDB", "Express"],
-    githubUrl: "https://github.com/yourusername/chat-app",
-    liveUrl: "https://chat-app-demo.com",
-    category: "Full Stack"
+    image: "/project-images/Musician_site_img.png",
+    technologies: ["HTML", "CSS", "JavaScript"],
+    githubUrl: "https://github.com/jenyaproviz/Musician-Site.git",
+    liveUrl: "https://jenyaproviz.github.io/Musician-Site/",
+    category: "Frontend"
   }
 ];
 
@@ -91,7 +61,7 @@ export const ProjectsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const categories = ["All", "Full Stack", "Frontend", "Backend", "DevOps"];
+  const categories = ["All", "Full Stack", "Frontend", "Backend"];
 
   const filteredProjects = projectsData.filter(project => {
     const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
@@ -154,14 +124,14 @@ export const ProjectsPage = () => {
         {filteredProjects.map((project) => (
           <div
             key={project.id}
-            className="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group"
+            className="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group flex flex-col h-full min-h-[32rem]"
           >
             {/* Project Image */}
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden basis-1/2 min-h-0 bg-gray-900">
               <img
                 src={project.image}
                 alt={project.title}
-                className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <div className="flex gap-4">
@@ -190,7 +160,8 @@ export const ProjectsPage = () => {
             </div>
 
             {/* Project Content */}
-            <div className="p-6">
+            <div className="p-6 basis-1/2 flex flex-col justify-between gap-4">
+              <div>
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
                   {project.title}
@@ -215,6 +186,7 @@ export const ProjectsPage = () => {
                     <span className="text-gray-300">{tech}</span>
                   </div>
                 ))}
+              </div>
               </div>
 
               {/* Project Links */}

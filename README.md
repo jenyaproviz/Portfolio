@@ -5,6 +5,7 @@ A full-stack portfolio website showcasing my skills as a Frontend Developer and 
 ## 🚀 Tech Stack
 
 **Frontend:**
+
 - React 18 with TypeScript
 - Redux Toolkit for state management
 - Tailwind CSS for styling
@@ -12,6 +13,7 @@ A full-stack portfolio website showcasing my skills as a Frontend Developer and 
 - React Icons for UI elements
 
 **Backend:**
+
 - Node.js with Express
 - MongoDB for database
 - JWT authentication
@@ -19,7 +21,7 @@ A full-stack portfolio website showcasing my skills as a Frontend Developer and 
 
 ## 📁 Project Structure
 
-```
+```text
 Portfolio/
 ├── client/          # React frontend application
 │   ├── src/
@@ -49,17 +51,20 @@ Portfolio/
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - MongoDB
 - npm or yarn
 
 ### Clone Repository
+
 ```bash
 git clone https://github.com/jenyaproviz/Portfolio.git
 cd Portfolio
 ```
 
 ### Install Dependencies
+
 ```bash
 # Install root dependencies
 npm install
@@ -74,7 +79,9 @@ npm install
 ```
 
 ### Environment Setup
+
 Create `.env` file in the server directory:
+
 ```env
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
@@ -82,21 +89,27 @@ PORT=3001
 ```
 
 ### Run the Application
+
 ```bash
 # From project root - run both client and server
 npm run dev
 
 # Or run separately:
 # Client (from client directory)
+cd client
 npm start
 
 # Server (from server directory)
-npm start
+cd ../server
+npm run dev
 ```
+
+The frontend runs on <http://localhost:3000> and the backend runs on <http://localhost:8080> by default.
 
 ## 📧 Contact
 
-**Jenya Proviz**
+### Jenya Proviz
+
 - LinkedIn: [Your LinkedIn]
 - Email: [Your Email]
 - Location: Israel

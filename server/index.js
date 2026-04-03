@@ -6,29 +6,87 @@ import fileUpload from "express-fileupload";
 import authRoute from "./routes/auth.js";
 import postRoute from "./routes/posts.js";
 import commentRoute from "./routes/comments.js";
-import bodyParser from "body-parser";
-import initializeDatabase from "../server/utils/init-database.js"; // Updated import
+import contactRoute from "./routes/contact.js";
+import initializeDatabase from "./utils/init-database.js";
 import chalk from "chalk";
-import Post from "../server/models/Post.js";
 
 // Configuring environment variables
 dotenv.config();
-
-console.log("✅ JWT_SECRET from .env:", process.env.JWT_SECRET);
 
 const app = express();
 
 // Constants
 const PORT = process.env.PORT || 8080;
-const DB_NAME = process.env.DB_NAME;
+
+function buildMongoUri({ dbHost, dbPort, dbName, dbUser, dbPassword, dbAuthSource }) {
+  const username = encodeURIComponent(dbUser);
+  const password = encodeURIComponent(dbPassword);
+
+  return `mongodb://${username}:${password}@${dbHost}:${dbPort}/${dbName}?authSource=${encodeURIComponent(dbAuthSource)}`;
+}
+
+function getMongoUriCandidates() {
+  if (process.env.MONGODB_URI) {
+    return [process.env.MONGODB_URI];
+  }
+
+  const dbHost = process.env.DB_HOST || "localhost";
+  const dbPort = process.env.DB_PORT || "27017";
+  const dbName = process.env.DB_NAME || "youtube";
+  const candidates = [];
+
+  if (process.env.DB_USER && process.env.DB_PASSWORD) {
+    const authSources = [
+      process.env.DB_AUTH_SOURCE,
+      dbName,
+      "admin",
+    ].filter(Boolean);
+
+    for (const authSource of [...new Set(authSources)]) {
+      candidates.push(
+        buildMongoUri({
+          dbHost,
+          dbPort,
+          dbName,
+          dbUser: process.env.DB_USER,
+          dbPassword: process.env.DB_PASSWORD,
+          dbAuthSource: authSource,
+        })
+      );
+    }
+  }
+
+  candidates.push(`mongodb://${dbHost}:${dbPort}/${dbName}`);
+
+  return [...new Set(candidates)];
+}
+
+async function connectToMongo() {
+  const mongoUriCandidates = getMongoUriCandidates();
+  let lastError;
+
+  for (const mongoUri of mongoUriCandidates) {
+    try {
+      await mongoose.connect(mongoUri);
+      return mongoUri;
+    } catch (error) {
+      lastError = error;
+
+      if (mongoose.connection.readyState !== 0) {
+        await mongoose.disconnect();
+      }
+    }
+  }
+
+  throw lastError;
+}
 
 // Middleware
 app.use(cors());
 app.use(fileUpload());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("uploads"));
-//app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 // Serve images from the 'uploads' directory
 app.use("/uploads", express.static("uploads"));
 app.use((err, req, res, next) => {
@@ -48,40 +106,39 @@ app.use((req, res, next) => {
 });
 
 // Routes
-import contactRoute from "./routes/contact.js";
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api/contact", contactRoute);
 
-// Fetch all posts and popular posts
-app.get("/api/posts", async (req, res) => {
-  try {
-    const posts = await Post.find();
-    const popularPosts = await Post.find({ popularity: { $gte: 10 } }); // Adjust the condition based on your logic
-
-    res.status(200).json({ posts, popularPosts });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
 // Connect to MongoDB and start the server
 async function start() {
   try {
-    // Use MONGODB_URI from environment if available, otherwise fallback to localhost
-    const mongoUri = process.env.MONGODB_URI || `mongodb://localhost:27017/${DB_NAME}`;
-    await mongoose.connect(mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const mongoUri = await connectToMongo();
 
     console.log(chalk.greenBright(`Connected to MongoDB at: ${mongoUri}`));
 
-    app.listen(PORT, () =>
+    if (process.env.SEED_DATABASE === "true") {
+      await initializeDatabase();
+      console.log(chalk.greenBright("Database initialized successfully"));
+    }
+
+    const server = app.listen(PORT, () =>
       console.log(chalk.blueBright(`Server started on port: ${PORT}`))
     );
+
+    server.on("error", (error) => {
+      if (error.code === "EADDRINUSE") {
+        console.error(
+          chalk.redBright(
+            `Port ${PORT} is already in use. Stop the existing server or change PORT in server/.env.`
+          )
+        );
+        process.exit(1);
+      }
+
+      throw error;
+    });
   } catch (error) {
     console.error(
       chalk.redBright("Error connecting to MongoDB:", error.message)
@@ -91,12 +148,3 @@ async function start() {
 }
 
 start();
-
-// Initialize the database with users
-initializeDatabase()
-  .then((_result) => {
-    console.log(chalk.greenBright("Database initialized successfully"));
-  })
-  .catch((error) => {
-    console.error(chalk.redBright("Error initializing database:", error));
-  });
