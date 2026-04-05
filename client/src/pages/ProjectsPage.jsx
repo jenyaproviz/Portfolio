@@ -34,6 +34,16 @@ const projectsData = [
     githubUrl: "https://github.com/jenyaproviz/Musician-Site.git",
     liveUrl: "https://jenyaproviz.github.io/Musician-Site/",
     category: "Frontend"
+  },
+   {
+    id: 4,
+    title: "JobPilot",
+    description: "JobPilot is a full-stack job search app with a React frontend, a TypeScript/Express backend, and a separate MCP-based AI server. It lets users search jobs, browse job sources, and use AI-assisted features like smarter search and analysis, with local development running as three processes: frontend, API, and AI server.",
+    image: "/project-images/JobPilot_img.png",
+    technologies: ["React", "Node.js", "MongoDB", "TypeScript", "Tailwind CSS", "Vite", "Redux Toolkit", "Axios", "Express", "OpenAI API", "Mongoose", "Socket.io", "JWT", "Chart.js", "Weather API", "Redis"],
+    githubUrl: "https://github.com/jenyaproviz/JobPilot.git",
+    liveUrl: "https://job-pilot-client.vercel.app/",
+    category: "Full Stack"
   }
 ];
 
