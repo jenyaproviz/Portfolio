@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import FileSaver from "file-saver";
 import LogoImage from "../utils/LOGO.jpg";
 import { 
   SiReact, 
@@ -27,15 +26,19 @@ import {
   SiPandas,
   SiNumpy,
   SiJupyter,
-  SiDocker
+  SiDocker,
 } from "react-icons/si";
 import { AiOutlineDownload, AiOutlineCheckCircle } from "react-icons/ai";
 import { BsBriefcase, BsMortarboard, BsAward } from "react-icons/bs";
 
 const downloadCV = () => {
-  const cvFilePath = `${process.env.PUBLIC_URL}/Jenya Proviz FS.pdf`;
-  FileSaver.saveAs(cvFilePath, "My_CV.pdf");
-  console.log("Downloading CV...");
+  const cvFilePath = `${process.env.PUBLIC_URL}/My_CV.pdf`;
+  const link = document.createElement("a");
+  link.href = cvFilePath;
+  link.download = "My_CV.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 // Skills data with progress levels
@@ -44,6 +47,7 @@ const skillsData = {
     { name: "React", icon: <SiReact className="text-blue-400" />, level: 85 },
     { name: "TypeScript", icon: <SiTypescript className="text-blue-600" />, level: 80 },
     { name: "JavaScript", icon: <SiJavascript className="text-yellow-500" />, level: 90 },
+    { name: "Redux", icon: <SiRedux className="text-purple-600" />, level: 80 },
     { name: "HTML5", icon: <SiHtml5 className="text-orange-500" />, level: 95 },
     { name: "CSS3", icon: <SiCss3 className="text-blue-500" />, level: 85 },
     { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-400" />, level: 90 },
@@ -67,20 +71,20 @@ const skillsData = {
     { name: "SendGrid Templates", icon: <span className="text-blue-500">📧</span>, level: 70 }
   ],
   "Tools & Others": [
-    { name: "Redux", icon: <SiRedux className="text-purple-600" />, level: 80 },
-    { name: "Git", icon: <SiGit className="text-orange-600" />, level: 85 },
-    { name: "Figma", icon: <SiFigma className="text-purple-500" />, level: 70 },
+    { name: "Git", icon: <SiGit className="text-orange-600" />, level: 100 },
+    { name: "Figma", icon: <SiFigma className="text-purple-500" />, level: 90 },
     { name: "Docker", icon: <SiDocker className="text-blue-400" />, level: 60 },
-    { name: "Excel", icon: <SiMicrosoftexcel className="text-green-600" />, level: 90 },
-    { name: "Jira", icon: <SiJira className="text-blue-500" />, level: 85 }
+    { name: "Excel", icon: <SiMicrosoftexcel className="text-green-600" />, level: 100 },
+    { name: "Jira", icon: <SiJira className="text-blue-500" />, level: 85 },
+    { name: "Priority ERP", icon: <span className="text-gray-400">📊</span>, level: 100 }
   ],
   "AI in Process Learning": [
-    { name: "TensorFlow", icon: <SiTensorflow className="text-orange-500" />, level: 10 },
-    { name: "Pandas", icon: <SiPandas className="text-blue-600" />, level: 10 },
-    { name: "NumPy", icon: <SiNumpy className="text-blue-400" />, level: 10 },
-    { name: "Jupyter", icon: <SiJupyter className="text-orange-400" />, level: 10 },
-    { name: "Machine Learning", icon: <span className="text-purple-500">🔬</span>, level: 10 },
-    { name: "Deep Learning", icon: <span className="text-indigo-500">🧬</span>, level: 10 }
+    { name: "TensorFlow", icon: <SiTensorflow className="text-orange-500" />, level: 50 },
+    { name: "Pandas", icon: <SiPandas className="text-blue-600" />, level: 50 },
+    { name: "NumPy", icon: <SiNumpy className="text-blue-400" />, level: 50 },
+    { name: "Jupyter", icon: <SiJupyter className="text-orange-400" />, level: 50 },
+    { name: "Machine Learning", icon: <span className="text-purple-500">🔬</span>, level: 50 },
+    { name: "Deep Learning", icon: <span className="text-indigo-500">🧬</span>, level: 50 }
   ]
 };
 
@@ -98,7 +102,7 @@ const educationData = [
     title: "Full Stack Web Development",
     company: "HackerU College",
     description: "540 hours of intensive training in React, Redux, JavaScript, TypeScript, HTML, CSS, Node.js, MongoDB, and REST API architecture.",
-    technologies: ["React", "Redux", "JavaScript", "TypeScript", "HTML", "CSS", "Node.js", "MongoDB", "REST API"]
+    technologies: ["React", "Redux", "JavaScript", "TypeScript", "HTML", "CSS", "Tailwind CSS", "Bootstrap", "Storybook", "Node.js", "MongoDB", "REST API", "MySQL"]
   },
   {
     year: "2005 - 2010",
@@ -122,14 +126,25 @@ const workExperienceData = [
     year: "2024 - Present",
     title: "Junior Frontend Developer",
     company: "Payouts",
-    description: "Developed and maintained an internal financial dashboard using React and TypeScript. Integrated AI tools (Cursor, OpenAI API) to enhance code quality, testing, and workflow automation. Migrated state management from Context API to Redux, improving performance by 40%. Created responsive SendGrid email templates with HTML/CSS. Debugged and optimized UI performance, reducing load time by ~25%. Collaborated with backend and QA teams in Agile sprints.",
+    description: `• Developing and maintaining an internal financial dashboard using React and TypeScript.
+• Built reusable UI components and improved application structure for scalability.
+• Integrated REST APIs and handled asynchronous data flows.
+• Managed state, API integration, and UI logic using React hooks and Redux.
+• Migrated state management from Context API to Redux, improving scalability and maintainability.
+• Developed responsive email templates using HTML/CSS (SendGrid).
+• Identified and fixed UI issues, improving performance and user experience.
+• Integrated AI tools (OpenAI API, Cursor) to improve development, workflow and productivity.
+• Collaborated with backend developers and QA in Agile development cycles.`,
     technologies: ["React", "TypeScript", "Redux", "HTML/CSS", "Cursor", "OpenAI API", "SendGrid", "Agile"]
   },
   {
     year: "2004 - 2024",
     title: "Production and Material Planner",
     company: "Mars Antennas and RF Systems",
-    description: "Led production and supply chain planning for 20 employees. Implemented ERP (Priority) optimizations to improve workflow efficiency. Coordinated with global suppliers and introduced process automation. Trained and mentored teams; standardized production documentation.",
+    description: ` • Led production and supply chain planning for 20 employees.
+• Implemented ERP (Priority) optimizations to improve workflow efficiency.
+• Coordinated with global suppliers and introduced automation processes.
+• Trained and mentored teams; standardized production documentation.`,
     technologies: ["ERP-Priority", "Supply Chain Management", "Process Automation", "Team Leadership", "Excel", "Project Management"]
   }
 ];
@@ -180,13 +195,13 @@ const TimelineItem = ({ item, index, isWork = false }) => {
       
       {/* Content */}
       <div className="flex-1">
-        <div className="bg-gray-800 rounded-lg p-4 hover:bg-gray-750 transition-all duration-300">
+        <div className="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-all duration-300">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-lg font-semibold text-white">{item.title}</h3>
             <span className="text-sm text-gray-400 bg-gray-700 px-2 py-1 rounded">{item.year}</span>
           </div>
           <p className="text-blue-400 font-medium mb-2">{item.company}</p>
-          <p className="text-gray-300 mb-3 leading-relaxed">{item.description}</p>
+          <p className="text-gray-300 mb-3 leading-relaxed whitespace-pre-line">{item.description}</p>
           <div className="flex flex-wrap gap-2">
             {item.technologies.map((tech, techIndex) => (
               <span 
@@ -231,7 +246,7 @@ const AboutMePage = () => {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-gray-800 p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-blue-400">2+</div>
+              <div className="text-2xl font-bold text-blue-400">1+</div>
               <div className="text-sm text-gray-400">Years Experience</div>
             </div>
             <div className="bg-gray-800 p-4 rounded-lg text-center">
@@ -301,7 +316,7 @@ const AboutMePage = () => {
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6">
             {/* Hebrew */}
-            <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-750 transition-all duration-300">
+            <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-700 transition-all duration-300">
               <div className="w-16 h-16 mx-auto mb-4 bg-blue-600 rounded-full flex items-center justify-center">
                 <span className="text-2xl">🇮🇱</span>
               </div>
@@ -314,7 +329,7 @@ const AboutMePage = () => {
             </div>
 
  {/* English */}
-            <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-750 transition-all duration-300">
+            <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-700 transition-all duration-300">
               <div className="w-16 h-16 mx-auto mb-4 bg-green-600 rounded-full flex items-center justify-center">
                 <span className="text-2xl">🇺🇸</span>
               </div>
@@ -327,7 +342,7 @@ const AboutMePage = () => {
             </div>
 
             {/* Russian */}
-            <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-750 transition-all duration-300">
+            <div className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-700 transition-all duration-300">
               <div className="w-16 h-16 mx-auto mb-4 bg-yellow-600 rounded-full flex items-center justify-center">
                 <span className="text-2xl">🇷🇺</span>
               </div>
@@ -350,12 +365,12 @@ const AboutMePage = () => {
         <h2 className="text-3xl font-bold text-white mb-8 text-center">Technical Skills</h2>
         
         <div className="flex justify-center mb-8">
-          <div className="flex bg-gray-800 rounded-lg p-1">
+          <div className="flex flex-wrap justify-center gap-2 bg-gray-800 rounded-lg p-1 max-w-full">
             {Object.keys(skillsData).map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveSkillCategory(category)}
-                className={`px-6 py-2 rounded-lg transition-all duration-300 ${
+                className={`px-4 md:px-6 py-2 rounded-lg transition-all duration-300 text-sm md:text-base ${
                   activeSkillCategory === category
                     ? "bg-blue-600 text-white"
                     : "text-gray-400 hover:text-white"

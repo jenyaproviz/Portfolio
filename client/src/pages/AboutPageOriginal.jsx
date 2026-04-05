@@ -1,11 +1,14 @@
 import React from "react";
-import FileSaver from "file-saver";
 import LogoImage from "../utils/LOGO.jpg";
 
 const downloadCV = () => {
-  const cvFilePath = `${process.env.PUBLIC_URL}/Jenya Proviz FS.pdf`;
-  FileSaver.saveAs(cvFilePath, "My_CV.pdf");
-  console.log("Downloading CV...");
+  const cvFilePath = `${process.env.PUBLIC_URL}/My_CV.pdf`;
+  const link = document.createElement("a");
+  link.href = cvFilePath;
+  link.download = "My_CV.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 const AboutMePage = () => {
