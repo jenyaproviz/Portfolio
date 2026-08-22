@@ -1,4 +1,4 @@
-# Portfolio - Jenya Proviz
+Deploy it to a hosted URL so the user only clicks a web link.# Portfolio - Jenya Proviz
 
 A full-stack portfolio website showcasing my skills as a Frontend Developer and AI Expert.
 

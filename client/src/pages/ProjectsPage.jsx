@@ -44,6 +44,15 @@ const projectsData = [
     githubUrl: "https://github.com/jenyaproviz/JobPilot.git",
     liveUrl: "https://job-pilot-client.vercel.app/",
     category: "Full Stack"
+  },
+  {
+    id: 5,
+    title: "SmartMRP AI Assistant",
+    description: "AI-based inventory planning assistant with demand forecasting, shortage-risk analysis, purchase recommendations, and order-risk review for manufacturing data.",
+    image: "/project-images/SmartMRP_img.png",
+    technologies: ["Python", "OpenAI API"],
+    githubUrl: "https://github.com/jenyaproviz/smartMRP_AI",
+    category: "Full Stack"
   }
 ];
 
@@ -138,11 +147,17 @@ export const ProjectsPage = () => {
           >
             {/* Project Image */}
             <div className="relative overflow-hidden basis-1/2 min-h-0 bg-gray-900">
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-full h-full min-h-48 flex items-center justify-center bg-gradient-to-br from-cyan-900 to-blue-950 p-6 text-center">
+                  <span className="text-2xl font-semibold text-white">{project.title}</span>
+                </div>
+              )}
               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <div className="flex gap-4">
                   {project.githubUrl && (
