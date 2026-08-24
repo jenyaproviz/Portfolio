@@ -47,7 +47,17 @@ export const PostsPage = () => {
           {error}
         </div>
       ) : posts?.length > 0 ? (
-        posts.map((post, idx) => <PostItem post={post} key={idx} />)
+        posts.map((post, idx) => (
+          <PostItem
+            post={post}
+            key={idx}
+            onPostRemoved={(removedPostId) =>
+              setPosts((currentPosts) =>
+                currentPosts.filter((currentPost) => currentPost._id !== removedPostId)
+              )
+            }
+          />
+        ))
       ) : (
         <div className="text-xl text-center text-white py-10">
           No posts found.

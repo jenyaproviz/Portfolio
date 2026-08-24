@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 
+const sanitizeHeaderValue = (value) => value.replace(/[\r\n]+/g, " ").trim();
+
 export const sendContactEmail = async (req, res) => {
   const { name, email, tel } = req.body;
   if (!name || !email || !tel) {
@@ -7,19 +9,34 @@ export const sendContactEmail = async (req, res) => {
   }
 
   try {
+    const senderEmail = sanitizeHeaderValue(process.env.EMAIL_USER || "");
+    const senderName = sanitizeHeaderValue(
+      process.env.EMAIL_FROM_NAME || "Portfolio Contact Form"
+    );
+    const contactName = sanitizeHeaderValue(name);
+    const contactEmail = sanitizeHeaderValue(email);
+    const contactPhone = sanitizeHeaderValue(tel);
+
+    if (!senderEmail) {
+      return res.status(500).json({ message: "Mail sender is not configured." });
+    }
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
+      disableFileAccess: true,
+      disableUrlAccess: true,
       auth: {
-        user: process.env.EMAIL_USER,
+        user: senderEmail,
         pass: process.env.EMAIL_PASS,
       },
     });
 
     await transporter.sendMail({
-      from: email,
-      to: process.env.EMAIL_USER, // your email
-      subject: `Contact Form Submission from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${tel}`,
+      from: `"${senderName}" <${senderEmail}>`,
+      to: senderEmail,
+      replyTo: contactEmail,
+      subject: `Contact Form Submission from ${contactName}`,
+      text: `Name: ${contactName}\nEmail: ${contactEmail}\nPhone: ${contactPhone}`,
     });
 
     res.json({ message: "Message sent successfully!" });

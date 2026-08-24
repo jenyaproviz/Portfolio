@@ -1,4 +1,4 @@
-Deploy it to a hosted URL so the user only clicks a web link.# Portfolio - Jenya Proviz
+# Portfolio - Jenya Proviz
 
 A full-stack portfolio website showcasing my skills as a Frontend Developer and AI Expert.
 
@@ -6,7 +6,8 @@ A full-stack portfolio website showcasing my skills as a Frontend Developer and 
 
 **Frontend:**
 
-- React 18 with TypeScript
+- React 18
+- Vite
 - Redux Toolkit for state management
 - Tailwind CSS for styling
 - React Router for navigation
@@ -85,7 +86,16 @@ Create `.env` file in the server directory:
 ```env
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-PORT=3001
+PORT=8080
+EMAIL_USER=your_gmail_address
+EMAIL_PASS=your_app_password
+EMAIL_FROM_NAME=Portfolio Contact Form
+```
+
+Optional client environment in the client directory:
+
+```env
+VITE_API_URL=http://localhost:8080/api
 ```
 
 ### Run the Application
@@ -106,18 +116,21 @@ npm run dev
 
 The frontend runs on <http://localhost:3000> and the backend runs on <http://localhost:8080> by default.
 
+For a production frontend build:
+
+```bash
+cd client
+npm run build
+```
+
 ## 📧 Contact
 
 ### Jenya Proviz
 
-- LinkedIn: [Your LinkedIn]
-- Email: [Your Email]
+- LinkedIn: [linkedin.com/in/jenya-proviz-katz]
+- Email: [jenka.katz@gmail.com]
 - Location: Israel
 
 ## 🎯 About
 
 Frontend Developer with 20+ years of Industrial Engineering experience, currently specializing in AI and modern web technologies. Passionate about creating efficient, user-friendly applications and integrating AI-driven solutions.
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).

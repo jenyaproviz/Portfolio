@@ -36,6 +36,14 @@ import Comment from "../models/Comment.js";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 
+const canManagePost = (post, userId, isAdmin) => {
+  if (isAdmin) {
+    return true;
+  }
+
+  return post.author?.toString() === userId;
+};
+
 // Create Post
 export const createPost = async (req, res) => {
   try {
@@ -127,14 +135,24 @@ export const getMyPosts = async (req, res) => {
 // Remove post
 export const removePost = async (req, res) => {
   try {
-    const post = await Post.findByIdAndDelete(req.params.id);
-    if (!post) return res.json({ message: "This post does not exist." });
+    const user = await User.findById(req.userId);
+    const post = await Post.findById(req.params.id);
 
-    await User.findByIdAndUpdate(req.userId, {
+    if (!post) {
+      return res.status(404).json({ message: "This post does not exist." });
+    }
+
+    if (!canManagePost(post, req.userId, user?.isAdmin)) {
+      return res.status(403).json({ message: "Access denied." });
+    }
+
+    await Post.findByIdAndDelete(req.params.id);
+
+    await User.findByIdAndUpdate(post.author, {
       $pull: { posts: req.params.id },
     });
 
-    res.json({ message: "The post has been deleted." });
+    res.json({ message: "The post has been deleted.", _id: req.params.id });
   } catch (error) {
     res.json({ message: "Something went wrong." });
   }
@@ -144,7 +162,16 @@ export const removePost = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { title, text, id } = req.body;
+    const user = await User.findById(req.userId);
     const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found." });
+    }
+
+    if (!canManagePost(post, req.userId, user?.isAdmin)) {
+      return res.status(403).json({ message: "Access denied." });
+    }
 
     if (req.files) {
       let fileName = Date.now().toString() + req.files.image.name;

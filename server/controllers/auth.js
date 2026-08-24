@@ -3,6 +3,11 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { passwordPattern } from "../validators/regex.js";
 
+const ADMIN_USERNAME = "jenka.katz@gmail.com";
+
+const isPrivilegedAdmin = (username) =>
+  username?.trim().toLowerCase() === ADMIN_USERNAME;
+
 // Function to validate password
 export const validatePassword = (password) => {
   return passwordPattern.test(password);
@@ -46,7 +51,8 @@ export const register = async (req, res) => {
     }
 
     // Check if the provided adminCode is correct
-    const isAdmin = adminCode === process.env.ADMIN_CODE;
+    const isAdmin =
+      isPrivilegedAdmin(username) || adminCode === process.env.ADMIN_CODE;
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
@@ -85,7 +91,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    let user = await User.findOne({ username });
 
     if (!user) {
       return res.json({
@@ -102,6 +108,11 @@ export const login = async (req, res) => {
       return res.json({
         message: "Incorrect password.",
       });
+    }
+
+    if (isPrivilegedAdmin(user.username) && !user.isAdmin) {
+      user.isAdmin = true;
+      await user.save();
     }
 
     const token = jwt.sign(
@@ -131,6 +142,11 @@ export const getMe = async (req, res) => {
       return res.json({
         message: "User does not exist.",
       });
+    }
+
+    if (isPrivilegedAdmin(user.username) && !user.isAdmin) {
+      user.isAdmin = true;
+      await user.save();
     }
 
     const token = jwt.sign(

@@ -7,7 +7,6 @@ import authRoute from "./routes/auth.js";
 import postRoute from "./routes/posts.js";
 import commentRoute from "./routes/comments.js";
 import contactRoute from "./routes/contact.js";
-import initializeDatabase from "./utils/init-database.js";
 import chalk from "chalk";
 
 // Configuring environment variables
@@ -117,11 +116,6 @@ async function start() {
     const mongoUri = await connectToMongo();
 
     console.log(chalk.greenBright(`Connected to MongoDB at: ${mongoUri}`));
-
-    if (process.env.SEED_DATABASE === "true") {
-      await initializeDatabase();
-      console.log(chalk.greenBright("Database initialized successfully"));
-    }
 
     const server = app.listen(PORT, () =>
       console.log(chalk.blueBright(`Server started on port: ${PORT}`))

@@ -92,6 +92,9 @@ export const postSlice = createSlice({
         state.posts = state.posts.filter(
           (post) => post._id !== action.payload._id
         );
+        state.popularPosts = state.popularPosts.filter(
+          (post) => post._id !== action.payload._id
+        );
       })
       .addCase(removePost.rejected, (state) => {
         state.loading = false;

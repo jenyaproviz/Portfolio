@@ -9,6 +9,7 @@ export const Navbar = () => {
   const isAuth = useSelector(checkIsAuth);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+  const isAdmin = Boolean(user?.isAdmin);
 
   const activeStyles = {
     color: "#fff",
@@ -58,37 +59,7 @@ export const Navbar = () => {
             Main
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to={"/mainPosts"}
-            className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-            style={({ isActive }) => (isActive ? activeStyles : undefined)}
-          >
-            All Posts
-          </NavLink>
-        </li>
-        {isAuth ? (
-          <>
-            <li>
-              <NavLink
-                to={"/posts"}
-                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-                style={({ isActive }) => (isActive ? activeStyles : undefined)}
-              >
-                My Posts
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to={"/new"}
-                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-                style={({ isActive }) => (isActive ? activeStyles : undefined)}
-              >
-                Add Post
-              </NavLink>
-            </li>
-          </>
-        ) : (
+        {(!isAuth || isAdmin) && (
           <>
             <li>
               <NavLink
@@ -115,6 +86,37 @@ export const Navbar = () => {
                 style={({ isActive }) => (isActive ? activeStyles : undefined)}
               >
                 Contact Me
+              </NavLink>
+            </li>
+          </>
+        )}
+        <li>
+          <NavLink
+            to={"/mainPosts"}
+            className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
+            style={({ isActive }) => (isActive ? activeStyles : undefined)}
+          >
+            All Posts
+          </NavLink>
+        </li>
+        {isAuth && (
+          <>
+            <li>
+              <NavLink
+                to={"/posts"}
+                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
+                style={({ isActive }) => (isActive ? activeStyles : undefined)}
+              >
+                My Posts
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to={"/new"}
+                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
+                style={({ isActive }) => (isActive ? activeStyles : undefined)}
+              >
+                Add Post
               </NavLink>
             </li>
           </>

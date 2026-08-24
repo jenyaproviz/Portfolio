@@ -32,7 +32,7 @@ import { AiOutlineDownload, AiOutlineCheckCircle } from "react-icons/ai";
 import { BsBriefcase, BsMortarboard, BsAward } from "react-icons/bs";
 
 const downloadCV = () => {
-  const cvFilePath = `${process.env.PUBLIC_URL}/My_CV.pdf`;
+  const cvFilePath = "/My_CV.pdf";
   const link = document.createElement("a");
   link.href = cvFilePath;
   link.download = "My_CV.pdf";
@@ -91,7 +91,7 @@ const skillsData = {
 // Education data
 const educationData = [
   {
-    year: "2025 - Present",
+    year: "2025 - 2026",
     title: "AI Experts | Data Science, Machine Learning and Deep Learning",
     company: "John Bryce College",
     description: "440 hours of hands-on training in Python, Data Analysis (EDA), Machine Learning, Deep Learning, Generative AI, and Cloud Deployment. Practical experience with TensorFlow, Scikit-learn, Pandas, LangChain, and Docker through real-world AI projects including model building, optimization, and deployment.",
@@ -246,7 +246,7 @@ const AboutMePage = () => {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-gray-800 p-4 rounded-lg text-center">
-              <div className="text-2xl font-bold text-blue-400">1+</div>
+              <div className="text-2xl font-bold text-blue-400">2+</div>
               <div className="text-sm text-gray-400">Years Experience</div>
             </div>
             <div className="bg-gray-800 p-4 rounded-lg text-center">

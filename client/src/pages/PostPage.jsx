@@ -9,7 +9,6 @@ import {
   AiTwotoneEdit,
   AiFillDelete,
 } from "react-icons/ai";
-import Moment from "react-moment";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "../utils/axios";
@@ -19,6 +18,7 @@ import {
   getPostComments,
 } from "../redux/features/comment/commentSlice";
 import { CommentItem } from "../components/CommentItem";
+import { formatDate } from "../utils/formatDate";
 
 export const PostPage = () => {
   const [post, setPost] = useState(null);
@@ -29,6 +29,7 @@ export const PostPage = () => {
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
+  const canManagePost = user?.isAdmin || String(post?.author) === user?._id;
 
   const removePostHandler = () => {
     if (
@@ -109,43 +110,45 @@ export const PostPage = () => {
               </div>
             </div>
 
-            <div className="flex justify-between items-center pt-2">
-              <div className="text-xs text-white opacity-50">
-                {post.username}
+            <div className="px-3 pt-4">
+              <div className="flex justify-between items-center">
+                <div className="text-xs text-white opacity-50">
+                  {post.username}
+                </div>
+                <div className="text-xs text-white opacity-50">
+                  {formatDate(post.createdAt)}
+                </div>
               </div>
-              <div className="text-xs text-white opacity-50">
-                <Moment date={post.createdAt} format="D MMM YYYY" />
-              </div>
-            </div>
-            <div className="text-white text-xl">{post.title}</div>
-            <p className="text-white opacity-60 text-xs pt-4">{post.text}</p>
+              <div className="text-white text-xl mt-2">{post.title}</div>
+              <p className="text-white opacity-60 text-xs pt-4">{post.text}</p>
 
-            <div className="flex gap-3 items-center mt-2 justify-between">
-              <div className="flex gap-3 mt-4">
-                <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
-                  <AiFillEye /> <span>{post.views}</span>
-                </button>
-                <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
-                  <AiOutlineMessage />{" "}
-                  <span>{post.comments?.length || 0} </span>
-                </button>
-              </div>
-
-              {user?._id === post.author && (
+              <div className="flex gap-3 items-center mt-4 justify-between">
                 <div className="flex gap-3 mt-4">
-                  <button className="flex items-center justify-center gap-2 text-white opacity-50">
-                    <Link to={`/${params.id}/edit`}>
-                      <AiTwotoneEdit />
-                    </Link>
+                  <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
+                    <AiFillEye /> <span>{post.views}</span>
                   </button>
-                  <button
-                    onClick={removePostHandler}
-                    className="flex items-center justify-center gap-2  text-white opacity-50"
-                  >
-                    <AiFillDelete />
+                  <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
+                    <AiOutlineMessage />{" "}
+                    <span>{post.comments?.length || 0} </span>
                   </button>
                 </div>
-              )}
+
+                {canManagePost && (
+                  <div className="flex gap-3 mt-4">
+                    <button className="flex items-center justify-center gap-2 text-white opacity-50">
+                      <Link to={`/${params.id}/edit`}>
+                        <AiTwotoneEdit />
+                      </Link>
+                    </button>
+                    <button
+                      onClick={removePostHandler}
+                      className="flex items-center justify-center gap-2  text-white opacity-50"
+                    >
+                      <AiFillDelete />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className="w-1/3 p-8 bg-gray-700 flex flex-col gap-2 rounded-sm">
