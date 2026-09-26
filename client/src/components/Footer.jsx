@@ -6,12 +6,13 @@ import {
   FiInfo,
   FiBookOpen,
 } from "react-icons/fi";
+import { apiOrigin } from "../utils/api";
 
 const socialLinks = [
   {
     id: 1,
     icon: <FiGlobe />,
-    url: "http://localhost:3000/",
+    url: apiOrigin === "http://localhost:8080" ? "/" : window.location.origin,
   },
   {
     id: 2,

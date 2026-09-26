@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { updatePost } from "../redux/features/post/postSlice";
 import axios from "../utils/axios";
 import { toast } from "react-toastify";
+import { getUploadUrl } from "../utils/api";
 
 export const EditPostPage = () => {
   const [title, setTitle] = useState("");
@@ -72,7 +73,7 @@ export const EditPostPage = () => {
       <div className="flex object-cover py-2">
         {oldImage && (
           <img
-            src={`http://localhost:8080/${oldImage}`}
+            src={getUploadUrl(oldImage)}
             alt="Old"
             className="rounded-lg shadow-md max-h-40 mx-auto transition-transform duration-300 scale-100 hover:scale-105"
           />

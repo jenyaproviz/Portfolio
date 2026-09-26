@@ -19,6 +19,7 @@ import {
 } from "../redux/features/comment/commentSlice";
 import { CommentItem } from "../components/CommentItem";
 import { formatDate } from "../utils/formatDate";
+import { getUploadUrl } from "../utils/api";
 
 export const PostPage = () => {
   const [post, setPost] = useState(null);
@@ -102,7 +103,7 @@ export const PostPage = () => {
               >
                 {post?.imgUrl && (
                   <img
-                    src={`http://localhost:8080/uploads/${post.imgUrl}`}
+                    src={getUploadUrl(post.imgUrl)}
                     alt="img"
                     className="object-cover w-full rounded-2xl"
                   />

@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { formatDate } from "../utils/formatDate";
 import { removePost } from "../redux/features/post/postSlice";
+import { getUploadUrl } from "../utils/api";
 
 export const PostItem = ({ post, onPostRemoved }) => {
   const [showDeletedMessage, setShowDeletedMessage] = useState(false);
@@ -68,7 +69,7 @@ export const PostItem = ({ post, onPostRemoved }) => {
             >
               {post.imgUrl && (
                 <img
-                  src={`http://localhost:8080/uploads/${post.imgUrl}`}
+                  src={getUploadUrl(post.imgUrl)}
                   alt="img"
                   className="object-cover w-full rounded-2xl transition-all duration-300 hover:brightness-90"
                 />

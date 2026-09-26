@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { apiBaseUrl } from "../utils/api";
 
 const ContactMePage = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const ContactMePage = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:8080/api/contact", {
+      const response = await fetch(`${apiBaseUrl}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

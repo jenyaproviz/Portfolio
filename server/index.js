@@ -16,6 +16,22 @@ const app = express();
 
 // Constants
 const PORT = process.env.PORT || 8080;
+const defaultAllowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost:4173",
+  "http://127.0.0.1:4173",
+];
+
+const allowedOrigins = [
+  ...defaultAllowedOrigins,
+  ...(process.env.CLIENT_URL || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+];
+
+const uniqueAllowedOrigins = [...new Set(allowedOrigins)];
 
 function buildMongoUri({ dbHost, dbPort, dbName, dbUser, dbPassword, dbAuthSource }) {
   const username = encodeURIComponent(dbUser);
@@ -81,27 +97,29 @@ async function connectToMongo() {
 }
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || uniqueAllowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+    },
+  })
+);
 app.use(fileUpload());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("uploads"));
 // Serve images from the 'uploads' directory
 app.use("/uploads", express.static("uploads"));
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true });
+});
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
-});
-
-// Middleware for CORS
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
 });
 
 // Routes
