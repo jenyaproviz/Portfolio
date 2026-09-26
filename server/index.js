@@ -16,18 +16,31 @@ const app = express();
 
 // Constants
 const PORT = process.env.PORT || 8080;
+
+function normalizeOrigin(origin) {
+  if (!origin) {
+    return "";
+  }
+
+  try {
+    return new URL(origin).origin;
+  } catch {
+    return origin.trim().replace(/\/$/, "");
+  }
+}
+
 const defaultAllowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "http://localhost:4173",
   "http://127.0.0.1:4173",
-];
+].map(normalizeOrigin);
 
 const allowedOrigins = [
   ...defaultAllowedOrigins,
   ...(process.env.CLIENT_URL || "")
     .split(",")
-    .map((origin) => origin.trim())
+    .map(normalizeOrigin)
     .filter(Boolean),
 ];
 
@@ -96,11 +109,22 @@ async function connectToMongo() {
   throw lastError;
 }
 
+function getSafeMongoTarget(mongoUri) {
+  try {
+    const parsedUrl = new URL(mongoUri);
+    return `${parsedUrl.host}${parsedUrl.pathname}`;
+  } catch {
+    return "configured cluster";
+  }
+}
+
 // Middleware
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || uniqueAllowedOrigins.includes(origin)) {
+      const normalizedOrigin = normalizeOrigin(origin);
+
+      if (!origin || uniqueAllowedOrigins.includes(normalizedOrigin)) {
         return callback(null, true);
       }
 
@@ -133,7 +157,11 @@ async function start() {
   try {
     const mongoUri = await connectToMongo();
 
-    console.log(chalk.greenBright(`Connected to MongoDB at: ${mongoUri}`));
+    console.log(
+      chalk.greenBright(
+        `Connected to MongoDB at: ${getSafeMongoTarget(mongoUri)}`
+      )
+    );
 
     const server = app.listen(PORT, () =>
       console.log(chalk.blueBright(`Server started on port: ${PORT}`))
