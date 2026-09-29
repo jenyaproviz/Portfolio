@@ -150,7 +150,7 @@ const ContactMePage = () => {
                   id="name"
                   placeholder="Full Name"
                   value={formData.name}
-                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none"
+                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none"
                   onChange={handleChange}
                 />
               </div>
@@ -165,7 +165,7 @@ const ContactMePage = () => {
                   id="email"
                   placeholder="Email"
                   value={formData.email}
-                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none"
+                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none"
                   onChange={handleChange}
                 />
               </div>
@@ -180,7 +180,7 @@ const ContactMePage = () => {
                   id="tel"
                   placeholder="Telephone Number"
                   value={formData.tel}
-                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold focus:border-indigo-500 focus:outline-none"
+                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none"
                   onChange={handleChange}
                 />
               </div>

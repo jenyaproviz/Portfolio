@@ -123,27 +123,38 @@ const educationData = [
 // Work Experience data
 const workExperienceData = [
   {
-    year: "2024 - Present",
-    title: "Junior Frontend Developer",
+    year: "2026 - Present",
+    title: "Full Stack Developer",
+    company: "Solventis",
+    description: `• Independent / client project.
+• Designed, developed, deployed and currently maintain the production website for an international sourcing and procurement company.`,
+    technologies: ["React", "JavaScript", "Node.js", "Tailwind CSS", "REST API", "Deployment"]
+  },
+  {
+    year: "Dec 2025 - Present",
+    title: "Production Planner, Industrial Engineer & Priority ERP Implementer",
+    company: "Elmul / Exosens Group",
+    description: `• Production and material planning in a manufacturing environment.
+• Priority ERP implementation, process improvement and operational support.
+• Working with production, purchasing, inventory and planning data.`,
+    technologies: ["ERP-Priority", "Production Planning", "MRP", "Supply Chain", "Excel"]
+  },
+  {
+    year: "Aug 2024 - Nov 2025",
+    title: "Frontend Developer",
     company: "Payouts",
-    description: `• Developing and maintaining an internal financial dashboard using React and TypeScript.
-• Built reusable UI components and improved application structure for scalability.
-• Integrated REST APIs and handled asynchronous data flows.
-• Managed state, API integration, and UI logic using React hooks and Redux.
-• Migrated state management from Context API to Redux, improving scalability and maintainability.
-• Developed responsive email templates using HTML/CSS (SendGrid).
-• Identified and fixed UI issues, improving performance and user experience.
-• Integrated AI tools (OpenAI API, Cursor) to improve development, workflow and productivity.
+    description: `• Developed and maintained an internal financial application using React and TypeScript.
+• Built reusable UI components, integrated REST APIs and managed application state with Redux.
+• Migrated state management from Context API to Redux and developed responsive SendGrid email templates.
 • Collaborated with backend developers and QA in Agile development cycles.`,
-    technologies: ["React", "TypeScript", "Redux", "HTML/CSS", "Cursor", "OpenAI API", "SendGrid", "Agile"]
+    technologies: ["React", "TypeScript", "Redux", "HTML/CSS", "REST API", "SendGrid", "Agile"]
   },
   {
     year: "2004 - 2024",
-    title: "Production and Material Planner",
+    title: "Production & Material Planner",
     company: "Mars Antennas and RF Systems",
-    description: ` • Led production and supply chain planning for 20 employees.
-• Implemented ERP (Priority) optimizations to improve workflow efficiency.
-• Coordinated with global suppliers and introduced automation processes.
+    description: `• Production, material and supply-chain planning in a manufacturing environment.
+• Priority ERP implementation, workflow optimization and coordination with purchasing, suppliers and production.
 • Trained and mentored teams; standardized production documentation.`,
     technologies: ["ERP-Priority", "Supply Chain Management", "Process Automation", "Team Leadership", "Excel", "Project Management"]
   }

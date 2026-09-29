@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { checkIsAuth, logout } from "../redux/features/auth/authSlice";
@@ -10,6 +10,7 @@ export const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const isAdmin = Boolean(user?.isAdmin);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const activeStyles = {
     color: "#fff",
@@ -40,107 +41,102 @@ export const Navbar = () => {
       </span>
     );
 
+  const navLinks = [
+    { to: "/", label: "Main", show: true },
+    { to: "/about", label: "About Me", show: !isAuth || isAdmin },
+    { to: "/projects", label: "Projects", show: !isAuth || isAdmin },
+    { to: "/contact", label: "Contact Me", show: !isAuth || isAdmin },
+    { to: "/mainPosts", label: "All Posts", show: true },
+    { to: "/posts", label: "My Posts", show: isAuth },
+    { to: "/new", label: "Add Post", show: isAuth },
+  ].filter((link) => link.show);
+
+  const renderLink = (link) => (
+    <li key={link.to}>
+      <NavLink
+        to={link.to}
+        className="text-base lg:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150 whitespace-nowrap"
+        style={({ isActive }) => (isActive ? activeStyles : undefined)}
+        onClick={() => setMenuOpen(false)}
+      >
+        {link.label}
+      </NavLink>
+    </li>
+  );
+
+  const authButton = isAuth ? (
+    <button
+      onClick={logoutHandler}
+      className="bg-gray-700 hover:bg-red-500 text-white font-semibold rounded-lg px-5 py-2 shadow transition duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
+    >
+      Exit
+    </button>
+  ) : (
+    <Link
+      to={"/login"}
+      onClick={() => setMenuOpen(false)}
+      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg px-5 py-2 shadow transition duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    >
+      Enter
+    </Link>
+  );
+
   return (
-    <nav className="w-full px-2 sm:px-6 py-3 flex justify-between items-center border-b border-gray-800 shadow-md">
-      <div className="flex items-center gap-3">
-        {avatar}
-        <span className="ml-2 text-blue-400 text-lg font-semibold tracking-wide">
-          {isAuth ? (user && user.username ? user.username : "Guest") : "Jenya"}
-        </span>
-      </div>
+    <nav className="relative w-full px-2 sm:px-6 py-3 border-b border-gray-800 shadow-md">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          {avatar}
+          <span className="ml-2 text-blue-400 text-lg font-semibold tracking-wide">
+            {isAuth ? (user && user.username ? user.username : "Guest") : "Jenya"}
+          </span>
+        </div>
 
-      <ul className="flex gap-4 sm:gap-8 items-center">
-        <li>
-          <NavLink
-            to={"/"}
-            className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-            style={({ isActive }) => (isActive ? activeStyles : undefined)}
-          >
-            Main
-          </NavLink>
-        </li>
-        {(!isAuth || isAdmin) && (
-          <>
-            <li>
-              <NavLink
-                to={"/about"}
-                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-                style={({ isActive }) => (isActive ? activeStyles : undefined)}
-              >
-                About Me
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to={"/projects"}
-                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-                style={({ isActive }) => (isActive ? activeStyles : undefined)}
-              >
-                Projects
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to={"/contact"}
-                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-                style={({ isActive }) => (isActive ? activeStyles : undefined)}
-              >
-                Contact Me
-              </NavLink>
-            </li>
-          </>
-        )}
-        <li>
-          <NavLink
-            to={"/mainPosts"}
-            className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-            style={({ isActive }) => (isActive ? activeStyles : undefined)}
-          >
-            All Posts
-          </NavLink>
-        </li>
-        {isAuth && (
-          <>
-            <li>
-              <NavLink
-                to={"/posts"}
-                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-                style={({ isActive }) => (isActive ? activeStyles : undefined)}
-              >
-                My Posts
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to={"/new"}
-                className="text-base sm:text-lg text-gray-300 hover:text-blue-400 px-2 py-1 rounded transition duration-150"
-                style={({ isActive }) => (isActive ? activeStyles : undefined)}
-              >
-                Add Post
-              </NavLink>
-            </li>
-          </>
-        )}
-      </ul>
+        {/* Desktop links */}
+        <ul className="hidden md:flex gap-2 lg:gap-6 items-center">
+          {navLinks.map(renderLink)}
+        </ul>
 
-      <div className="flex items-center gap-4">
-        {isAuth ? (
+        <div className="hidden md:flex items-center gap-4">
+          {authButton}
+          <ToggleTheme />
+        </div>
+
+        {/* Mobile controls */}
+        <div className="flex md:hidden items-center gap-3">
+          <ToggleTheme />
           <button
-            onClick={logoutHandler}
-            className="bg-gray-700 hover:bg-red-500 text-white font-semibold rounded-lg px-5 py-2 shadow transition duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
+            type="button"
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+            className="p-2 rounded-lg text-gray-300 hover:text-blue-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            Exit
+            <svg
+              className="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              {menuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
-        ) : (
-          <Link
-            to={"/login"}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg px-5 py-2 shadow transition duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            Enter
-          </Link>
-        )}
-        <ToggleTheme />
+        </div>
       </div>
+
+      {/* Mobile dropdown menu */}
+      {menuOpen && (
+        <div className="md:hidden absolute left-0 right-0 top-full z-50 bg-gray-900 border-b border-gray-800 shadow-lg">
+          <ul className="flex flex-col gap-2 px-4 py-4">
+            {navLinks.map(renderLink)}
+            <li className="pt-2 border-t border-gray-800">{authButton}</li>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };

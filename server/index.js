@@ -34,6 +34,7 @@ const defaultAllowedOrigins = [
   "http://127.0.0.1:3000",
   "http://localhost:4173",
   "http://127.0.0.1:4173",
+  "https://portfoliojenya.netlify.app",
 ].map(normalizeOrigin);
 
 const allowedOrigins = [
@@ -128,7 +129,8 @@ app.use(
         return callback(null, true);
       }
 
-      return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+      console.warn(`Origin ${origin} is not allowed by CORS`);
+      return callback(null, false);
     },
   })
 );
@@ -141,16 +143,18 @@ app.use("/uploads", express.static("uploads"));
 app.get("/api/health", (req, res) => {
   res.json({ ok: true });
 });
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong!");
-});
 
 // Routes
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api/contact", contactRoute);
+
+// Error handler (must be registered after routes)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
+});
 
 // Connect to MongoDB and start the server
 async function start() {
