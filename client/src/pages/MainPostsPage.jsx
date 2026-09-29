@@ -13,13 +13,8 @@ export const MainPostsPage = () => {
     dispatch(getAllPosts());
   }, [dispatch]);
 
-  // Check if posts is undefined or has a length of 0
-  if (!posts || !posts.length === 0) {
-    return (
-      <div className="text-xl text-center text-white py-10">
-        There are no posts.
-      </div>
-    );
+  if (!posts || posts.length === 0) {
+    return null;
   }
 
   return (

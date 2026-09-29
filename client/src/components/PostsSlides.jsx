@@ -15,11 +15,7 @@ export const PostsSlides = () => {
   }, [dispatch]);
 
   if (!posts || !posts.length) {
-    return (
-      <div className="text-xl text-center text-white py-10">
-        There are no posts.
-      </div>
-    );
+    return null;
   }
 
   const settings = {
