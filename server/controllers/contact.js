@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 const sanitizeHeaderValue = (value) => value.replace(/[\r\n]+/g, " ").trim();
 
 export const sendContactEmail = async (req, res) => {
-  const { name, email, tel } = req.body;
+  const { name, email, tel, message } = req.body;
   if (!name || !email || !tel) {
     return res.status(400).json({ message: "All fields are required." });
   }
@@ -16,6 +16,7 @@ export const sendContactEmail = async (req, res) => {
     const contactName = sanitizeHeaderValue(name);
     const contactEmail = sanitizeHeaderValue(email);
     const contactPhone = sanitizeHeaderValue(tel);
+    const contactMessage = typeof message === "string" ? message.trim() : "";
 
     if (!senderEmail) {
       return res.status(500).json({ message: "Mail sender is not configured." });
@@ -36,7 +37,9 @@ export const sendContactEmail = async (req, res) => {
       to: senderEmail,
       replyTo: contactEmail,
       subject: `Contact Form Submission from ${contactName}`,
-      text: `Name: ${contactName}\nEmail: ${contactEmail}\nPhone: ${contactPhone}`,
+      text: `Name: ${contactName}\nEmail: ${contactEmail}\nPhone: ${contactPhone}${
+        contactMessage ? `\n\nMessage:\n${contactMessage}` : ""
+      }`,
     });
 
     res.json({ message: "Message sent successfully!" });

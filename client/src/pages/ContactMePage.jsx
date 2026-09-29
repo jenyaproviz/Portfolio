@@ -7,6 +7,7 @@ const ContactMePage = () => {
     name: "",
     email: "",
     tel: "",
+    message: "",
   });
 
   const handleChange = (e) => {
@@ -31,7 +32,7 @@ const ContactMePage = () => {
       const result = await response.json();
       if (response.ok) {
         toast.success(result.message || "Message sent successfully!");
-        setFormData({ name: "", email: "", tel: "" });
+        setFormData({ name: "", email: "", tel: "", message: "" });
       } else {
         toast.error(result.message || "Failed to send message");
       }
@@ -183,6 +184,21 @@ const ContactMePage = () => {
                   className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none"
                   onChange={handleChange}
                 />
+              </div>
+
+              <div className="flex flex-col mt-2">
+                <label htmlFor="message" className="hidden">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  id="message"
+                  rows="4"
+                  placeholder="Your Message"
+                  value={formData.message}
+                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none resize-none"
+                  onChange={handleChange}
+                ></textarea>
               </div>
 
               <button
