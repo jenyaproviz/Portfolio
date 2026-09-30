@@ -22,6 +22,36 @@ export const sendContactEmail = async (req, res) => {
       return res.status(500).json({ message: "Mail sender is not configured." });
     }
 
+    const subject = `Contact Form Submission from ${contactName}`;
+    const text = `Name: ${contactName}\nEmail: ${contactEmail}\nPhone: ${contactPhone}${
+      contactMessage ? `\n\nMessage:\n${contactMessage}` : ""
+    }`;
+
+    // Resend sends over HTTPS, which works on hosts that block outbound SMTP (e.g. Render free tier)
+    if (process.env.RESEND_API_KEY) {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: `${senderName} <${process.env.RESEND_FROM || "onboarding@resend.dev"}>`,
+          to: [senderEmail],
+          reply_to: contactEmail,
+          subject,
+          text,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Resend API error ${response.status}: ${errorBody}`);
+      }
+
+      return res.json({ message: "Message sent successfully!" });
+    }
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       disableFileAccess: true,
@@ -36,10 +66,8 @@ export const sendContactEmail = async (req, res) => {
       from: `"${senderName}" <${senderEmail}>`,
       to: senderEmail,
       replyTo: contactEmail,
-      subject: `Contact Form Submission from ${contactName}`,
-      text: `Name: ${contactName}\nEmail: ${contactEmail}\nPhone: ${contactPhone}${
-        contactMessage ? `\n\nMessage:\n${contactMessage}` : ""
-      }`,
+      subject,
+      text,
     });
 
     res.json({ message: "Message sent successfully!" });
