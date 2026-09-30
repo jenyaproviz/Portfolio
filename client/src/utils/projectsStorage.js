@@ -1,7 +1,7 @@
 import { projectsData } from "./projectsData";
 
 const STORAGE_KEY = "portfolio_projects";
-const PROJECTS_WITH_SYNCED_METADATA = new Set([5, 6]);
+const PROJECTS_WITH_SYNCED_METADATA = new Set([2, 5, 6]);
 const PROJECT_ORDER = new Map(
   projectsData.map((project, index) => [project.id, index])
 );
