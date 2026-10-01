@@ -1,7 +1,12 @@
 import { projectsData } from "./projectsData";
 
 const STORAGE_KEY = "portfolio_projects";
-const PROJECTS_WITH_SYNCED_METADATA = new Set([5, 6]);
+const PROJECTS_WITH_SYNCED_METADATA = new Set([4, 5, 6]);
+const HIDDEN_PROJECT_IDS = new Set(
+  projectsData.filter((project) => project.hidden).map((project) => project.id)
+);
+const visibleProjects = (projects) =>
+  projects.filter((project) => !project?.hidden && !HIDDEN_PROJECT_IDS.has(project?.id));
 const PROJECT_ORDER = new Map(
   projectsData.map((project, index) => [project.id, index])
 );
@@ -80,22 +85,22 @@ const mergeProjects = (storedProjects) => {
 
 export const getProjects = () => {
   if (typeof window === "undefined") {
-    return projectsData;
+    return visibleProjects(projectsData);
   }
 
   const storedProjects = window.localStorage.getItem(STORAGE_KEY);
 
   if (!storedProjects) {
-    return projectsData;
+    return visibleProjects(projectsData);
   }
 
   try {
     const parsedProjects = JSON.parse(storedProjects);
     return Array.isArray(parsedProjects)
-      ? mergeProjects(parsedProjects)
-      : projectsData;
+      ? visibleProjects(mergeProjects(parsedProjects))
+      : visibleProjects(projectsData);
   } catch (error) {
-    return projectsData;
+    return visibleProjects(projectsData);
   }
 };
 

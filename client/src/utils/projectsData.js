@@ -14,6 +14,7 @@ export const projectsData = [
       "Express",
       "Mongoose",
       "Vite",
+      "Render",
     ],
     githubUrl: "https://github.com/jenyaproviz/solventa-trade.git",
     liveUrl: "https://www.solventatrade.eu/",
@@ -72,6 +73,26 @@ export const projectsData = [
   },
   {
     id: 4,
+    title: "Chaos Pilots",
+    description:
+      "Official website for the Chaos Pilots alternative rock band, featuring music, upcoming events, and social links with a bold, dark-themed responsive design.",
+    image: "/project-images/Chaos Pilots.png",
+    technologies: [
+      "React",
+      "Node.js",
+      "JavaScript",
+      "Tailwind CSS",
+      "Vercel",
+      "Render",
+    ],
+    githubUrl: "",
+    liveUrl: "https://chaospilots-band-website.vercel.app/",
+    category: "Full Stack",
+  },
+  {
+    // hidden: true keeps it out of the UI without deleting the data
+    id: 7,
+    hidden: true,
     title: "JobPilot",
     description:
       "Full-stack job search application with a React frontend, TypeScript and Express API, and an MCP-based AI service for smarter search and analysis workflows.",
