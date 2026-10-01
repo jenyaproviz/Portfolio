@@ -57,7 +57,7 @@ export const projectsData = [
     image: "/project-images/Raven_game_img.png",
     technologies: ["JavaScript", "CSS3", "HTML5"],
     githubUrl: "https://github.com/jenyaproviz/Raven-game.git",
-    liveUrl: "https://jenyaproviz.github.io/Raven-game/",
+    liveUrl: "https://ravengame-three.vercel.app/",
     category: "Frontend",
   },
   {

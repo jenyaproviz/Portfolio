@@ -1,7 +1,7 @@
 import { projectsData } from "./projectsData";
 
 const STORAGE_KEY = "portfolio_projects";
-const PROJECTS_WITH_SYNCED_METADATA = new Set([4, 5, 6]);
+const PROJECTS_WITH_SYNCED_METADATA = new Set([2, 4, 5, 6]);
 const HIDDEN_PROJECT_IDS = new Set(
   projectsData.filter((project) => project.hidden).map((project) => project.id)
 );
