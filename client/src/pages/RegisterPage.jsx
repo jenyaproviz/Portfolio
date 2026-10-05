@@ -34,7 +34,6 @@ export const RegisterPage = () => {
 
   return (
     <>
-      <form />
       <form
         onSubmit={(e) => e.preventDefault()}
         className="w-full max-w-md mx-auto mt-10 px-2 sm:px-4 py-8 bg-gray-900 rounded-xl shadow-xl border border-gray-700 flex flex-col gap-6"
@@ -74,7 +73,7 @@ export const RegisterPage = () => {
           className="text-xs text-blue-300 underline mb-2 self-start"
           onClick={() => setShowAdmin((prev) => !prev)}
         >
-          {showAdmin ? "Hide Admin Registration" : "Register as Admin?"}
+          {showAdmin ? "Hide admin code" : "Admin registration"}
         </button>
 
         {showAdmin && (
@@ -89,7 +88,7 @@ export const RegisterPage = () => {
               className="mt-1 text-black w-full rounded-lg bg-gray-200 border border-gray-400 py-2 px-3 text-base outline-none placeholder:text-gray-500 focus:ring-2 focus:ring-blue-400"
             />
             <span className="text-xs text-gray-500 block mt-1">
-              Only fill this if you want to register as an admin.
+              An admin code is required for administrator access.
             </span>
           </label>
         )}

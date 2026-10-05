@@ -1,8 +1,8 @@
 # Portfolio - Jenya Proviz
 
-A full-stack portfolio website showcasing my skills as a Frontend Developer and AI Expert.
+A personal portfolio with work experience, education, projects, and contact details. Built with React and an Express API.
 
-## 🚀 Tech Stack
+## Tech Stack
 
 **Frontend:**
 
@@ -20,7 +20,7 @@ A full-stack portfolio website showcasing my skills as a Frontend Developer and 
 - JWT authentication
 - File upload handling
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 Portfolio/
@@ -39,23 +39,23 @@ Portfolio/
 └── README.md
 ```
 
-## 🌟 Features
+## Features
 
-- **Responsive Design**: Mobile-first approach with Tailwind CSS
-- **Interactive Portfolio**: Projects showcase with filtering and search
-- **Skills Section**: Interactive skill categories with progress bars
-- **Professional Timeline**: Education and work experience display
-- **Multi-language Support**: Hebrew, Russian, and English
-- **Contact Form**: Direct communication capability
-- **Dark Theme**: Modern dark UI design
+- Project list with category filters and search.
+- Work and education history, categorized technical skills with animated bars, and spoken-language cards with proficiency bars. The interface is in English.
+- Contact form and direct email/phone links. The homepage has no map; the contact page has a separate location map.
+- Fixed navbar and compact 64px footer, with space reserved so they do not cover content.
+- Blog posts, comments, likes, and authenticated post management. Posts-list routes remain available directly but are not shown in navigation.
+- Admin project edits are stored in the current browser's local storage, not published to other visitors.
+- **Background Color Toggle**: Starts with `rgb(31, 41, 55)`; click the shuffle button for a random muted background color without changing panel or text colors. Use the reset arrow beside it to restore the original color. The color stays consistent across navigation and desktop/mobile controls, and resets on reload.
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js 22.12 or higher (required by Vite 7)
 - MongoDB
-- npm or yarn
+- npm
 
 ### Clone Repository
 
@@ -100,7 +100,7 @@ Optional client environment in the client directory:
 VITE_API_URL=http://localhost:8080/api
 ```
 
-You can copy the production-ready examples from [client/.env.example](c:/Users/jenka/Documents/Projects%20fullstack/Portfolio/client/.env.example) and [server/.env.example](c:/Users/jenka/Documents/Projects%20fullstack/Portfolio/server/.env.example).
+Environment examples are in [client/.env.example](client/.env.example) and [server/.env.example](server/.env.example).
 
 ### Run the Application
 
@@ -129,7 +129,7 @@ npm run build
 
 ## Public Deployment
 
-This repo is now prepared for a simple public deployment with:
+Deployment configuration supports:
 
 - Netlify for the React frontend
 - Render for the Express API
@@ -160,7 +160,7 @@ EMAIL_FROM_NAME=Portfolio Contact Form
 ### 2. Deploy the frontend on Netlify
 
 1. In Netlify, import the same GitHub repository.
-2. Netlify will use [netlify.toml](c:/Users/jenka/Documents/Projects%20fullstack/Portfolio/netlify.toml), so the frontend is built from the `client` folder automatically.
+2. Netlify will use [netlify.toml](netlify.toml), so the frontend is built from the `client` folder automatically.
 3. Add this environment variable in Netlify:
 
 ```env
@@ -169,7 +169,7 @@ VITE_API_URL=https://your-backend-url.onrender.com/api
 
 4. Deploy the site.
 
-The redirect rule in [netlify.toml](c:/Users/jenka/Documents/Projects%20fullstack/Portfolio/netlify.toml) keeps React Router working when visitors refresh routes like `/about` or `/projects`.
+The redirect rule in [netlify.toml](netlify.toml) keeps React Router working when visitors refresh routes like `/about` or `/projects`.
 
 ### 3. Connect the two services
 
@@ -183,14 +183,14 @@ After Netlify gives you a public site URL:
 
 Post images are stored in the server's local `uploads` folder. On hosts like Render, that storage is temporary, so uploaded images can disappear after restart or redeploy. For a durable production blog, move image uploads to Cloudinary, S3, or another external file store.
 
-## 📧 Contact
+## Contact
 
 ### Jenya Proviz
 
-- LinkedIn: [linkedin.com/in/jenya-proviz-katz]
-- Email: [jenka.katz@gmail.com]
+- LinkedIn: [Jenya Proviz](https://linkedin.com/in/jenya-proviz-katz)
+- Email: [jenka.katz@gmail.com](mailto:jenka.katz@gmail.com)
 - Location: Israel
 
-## 🎯 About
+## About
 
-Frontend Developer with 20+ years of Industrial Engineering experience, currently specializing in AI and modern web technologies. Passionate about creating efficient, user-friendly applications and integrating AI-driven solutions.
+Full stack developer working with React, TypeScript, and Node.js, with over 20 years of experience in industrial engineering and production planning. Currently studying Python, machine learning, and automation.

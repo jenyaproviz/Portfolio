@@ -3,7 +3,7 @@ export const projectsData = [
     id: 6,
     title: "Solventa Trade",
     description:
-      "A real full-stack trade and consulting project that I actively manage, built with React, TypeScript, Node.js, MongoDB, and Tailwind CSS for international business workflows.",
+      "Website for an international sourcing and procurement company. I developed and deployed the site and handle its ongoing maintenance.",
     image: "https://www.solventatrade.eu/image.jpg",
     technologies: [
       "React",
@@ -24,7 +24,7 @@ export const projectsData = [
     id: 5,
     title: "SmartMRP AI Assistant",
     description:
-      "AI-based inventory planning assistant built as the final project of the AI Experts course, with demand forecasting, shortage-risk analysis, purchase recommendations, and order-risk review for manufacturing data.",
+      "Inventory planning assistant developed for the AI Experts course. Uses manufacturing data for demand forecasting, shortage analysis, purchase recommendations, and order-risk review.",
     image: "/project-images/SmartMRP_img.png",
     technologies: ["Python", "OpenAI API"],
     githubUrl: "https://github.com/jenyaproviz/smartMRP_AI",
@@ -34,7 +34,7 @@ export const projectsData = [
     id: 1,
     title: "Blog Platform",
     description:
-      "A full-stack blog website built as a final project with React and Node.js. Features user authentication, post management, dark theme, and responsive design.",
+      "Course project built with React and Node.js. Includes user authentication, creating and editing posts, comments, and likes.",
     image: "/project-images/Blog_img.png",
     technologies: [
       "React",
@@ -64,7 +64,7 @@ export const projectsData = [
     id: 3,
     title: "Musician Site",
     description:
-      "Marketing website for a musician, built as a final project, with a responsive layout, custom sections, and lightweight frontend interactions.",
+      "Course project for a musician's website, built with HTML, CSS, and JavaScript.",
     image: "/project-images/Musician_site_img.png",
     technologies: ["HTML", "CSS", "JavaScript"],
     githubUrl: "https://github.com/jenyaproviz/Musician-Site.git",
@@ -75,7 +75,7 @@ export const projectsData = [
     id: 4,
     title: "Chaos Pilots",
     description:
-      "Official website for the Chaos Pilots alternative rock band, featuring music, upcoming events, and social links with a bold, dark-themed responsive design.",
+      "Website for the Chaos Pilots alternative rock band, with music, upcoming events, and social links.",
     image: "/project-images/Chaos Pilots.png",
     technologies: [
       "React",
@@ -90,12 +90,11 @@ export const projectsData = [
     category: "Full Stack",
   },
   {
-    // hidden: true keeps it out of the UI without deleting the data
     id: 7,
     hidden: true,
     title: "JobPilot",
     description:
-      "Full-stack job search application with a React frontend, TypeScript and Express API, and an MCP-based AI service for smarter search and analysis workflows.",
+      "Job search application with a React frontend, a TypeScript and Express API, and an MCP-based AI service for search and analysis.",
     image: "/project-images/JobPilot_img.png",
     technologies: [
       "React",

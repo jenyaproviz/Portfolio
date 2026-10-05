@@ -50,7 +50,7 @@ export const updatePost = createAsyncThunk(
   }
 );
 
-export const postSlice = createSlice({
+const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {},

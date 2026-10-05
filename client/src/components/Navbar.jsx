@@ -3,9 +3,9 @@ import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { checkIsAuth, logout } from "../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
-import ToggleTheme from "./ToggleTheme";
+import ToggleBackgroundColor from "./ToggleBackgroundColor";
 
-export const Navbar = () => {
+export const Navbar = ({ backgroundColor, onChangeColor, onResetColor }) => {
   const isAuth = useSelector(checkIsAuth);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
@@ -24,10 +24,9 @@ export const Navbar = () => {
   const logoutHandler = () => {
     dispatch(logout());
     window.localStorage.removeItem("token");
-    toast("You are logged out of the system");
+    toast("Signed out.");
   };
 
-  // Avatar logic: fallback to initials if no avatar image
   const avatar =
     user && user.avatarUrl ? (
       <img
@@ -46,8 +45,6 @@ export const Navbar = () => {
     { to: "/about", label: "About Me", show: !isAuth || isAdmin },
     { to: "/projects", label: "Projects", show: !isAuth || isAdmin },
     { to: "/contact", label: "Contact Me", show: !isAuth || isAdmin },
-    { to: "/mainPosts", label: "All Posts", show: true },
-    { to: "/posts", label: "My Posts", show: isAuth },
     { to: "/new", label: "Add Post", show: isAuth },
   ].filter((link) => link.show);
 
@@ -69,7 +66,7 @@ export const Navbar = () => {
       onClick={logoutHandler}
       className="bg-gray-700 hover:bg-red-500 text-white font-semibold rounded-lg px-5 py-2 shadow transition duration-150 focus:outline-none focus:ring-2 focus:ring-red-400"
     >
-      Exit
+      Sign out
     </button>
   ) : (
     <Link
@@ -77,33 +74,41 @@ export const Navbar = () => {
       onClick={() => setMenuOpen(false)}
       className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg px-5 py-2 shadow transition duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400"
     >
-      Enter
+      Sign in
     </Link>
   );
 
   return (
-    <nav className="relative w-full px-2 sm:px-6 py-3 border-b border-gray-800 shadow-md">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-3">
+    <nav aria-label="Main navigation" className="site-navbar fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-900/95 shadow-md backdrop-blur-md">
+      <div className="container mx-auto flex h-full justify-between items-center gap-2 px-3 sm:px-6">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {avatar}
-          <span className="ml-2 text-blue-400 text-lg font-semibold tracking-wide">
+          <span className="text-blue-400 text-base sm:text-lg font-semibold tracking-wide">
             {isAuth ? (user && user.username ? user.username : "Guest") : "Jenya"}
           </span>
         </div>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex gap-2 lg:gap-6 items-center">
+        <ul className="hidden lg:flex gap-2 xl:gap-6 items-center">
           {navLinks.map(renderLink)}
         </ul>
 
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4">
           {authButton}
-          <ToggleTheme />
+          <ToggleBackgroundColor
+            backgroundColor={backgroundColor}
+            onChangeColor={onChangeColor}
+            onResetColor={onResetColor}
+          />
         </div>
 
         {/* Mobile controls */}
-        <div className="flex md:hidden items-center gap-3">
-          <ToggleTheme />
+        <div className="flex lg:hidden items-center gap-1 sm:gap-3">
+          <ToggleBackgroundColor
+            backgroundColor={backgroundColor}
+            onChangeColor={onChangeColor}
+            onResetColor={onResetColor}
+          />
           <button
             type="button"
             aria-label="Toggle navigation menu"
@@ -130,7 +135,7 @@ export const Navbar = () => {
 
       {/* Mobile dropdown menu */}
       {menuOpen && (
-        <div className="md:hidden absolute left-0 right-0 top-full z-50 bg-gray-900 border-b border-gray-800 shadow-lg">
+        <div className="site-mobile-menu lg:hidden absolute left-0 right-0 top-full overflow-y-auto bg-slate-900 border-b border-white/10 shadow-lg">
           <ul className="flex flex-col gap-2 px-4 py-4">
             {navLinks.map(renderLink)}
             <li className="pt-2 border-t border-gray-800">{authButton}</li>

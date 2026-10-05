@@ -1,28 +1,31 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
+import { FiArrowUpRight, FiLinkedin, FiMail, FiMapPin, FiPhone, FiSend } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { apiBaseUrl } from "../utils/api";
 
-const ContactMePage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    tel: "",
-    message: "",
-  });
+const emptyForm = { name: "", email: "", tel: "", message: "" };
+
+const ContactMePage = ({ embedded = false }) => {
+  const [formData, setFormData] = useState(emptyForm);
+  const [isSending, setIsSending] = useState(false);
+  const formId = useId();
+  const Heading = embedded ? "h2" : "h1";
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((current) => ({
+      ...current,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.tel) {
+    if (isSending) return;
+    if (!formData.name.trim() || !formData.email.trim() || !formData.tel.trim()) {
       toast.error("Please fill in all the required fields.");
       return;
     }
+    setIsSending(true);
     try {
       const response = await fetch(`${apiBaseUrl}/contact`, {
         method: "POST",
@@ -32,186 +35,165 @@ const ContactMePage = () => {
       const result = await response.json();
       if (response.ok) {
         toast.success(result.message || "Message sent successfully!");
-        setFormData({ name: "", email: "", tel: "", message: "" });
+        setFormData(emptyForm);
       } else {
         toast.error(result.message || "Failed to send message");
       }
     } catch (error) {
       toast.error("Failed to send message");
+    } finally {
+      setIsSending(false);
     }
   };
 
+  const inputClassName =
+    "mt-2 w-full rounded-xl border border-slate-600 bg-slate-950/50 px-4 py-3 text-base text-white placeholder-slate-500 transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20";
+
   return (
-    <div className="relative flex items-top justify-center min-h-screen bg-gray-700 dark:bg-gray-900 sm:items-center sm:pt-0 rounded-xl shadow-xl text-xs ml-11 mr-11 overflow-hidden">
-      <iframe
-        title="map"
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27064.501498852074!2d34.760609657738115!3d32.01341557481311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502b4bb0c33bf39%3A0xfbdd79640525e72d!2sHolon!5e0!3m2!1sen!2sil!4v1709374241761!5m2!1sen!2sil"
-        width="100%"
-        height="100%"
-        style={{ border: 0, opacity: 0.6 }}
-        allowFullScreen=""
-        loading="lazy"
-        className="absolute inset-0 z-0"
-      ></iframe>
-      <div className="relative z-10 max-w-6xl mx-auto sm:px-6 lg:px-8">
-        <div className="mt-8 overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="p-6 mr-2 bg-gray-800 dark:bg-gray-300 sm:rounded-lg ">
-              <h1 className="text-4xl sm:text-2xl text-gray-400 dark:text-white font-extrabold tracking-tight">
-                Get in touch
-              </h1>
-              <p className="text-normal text-lg sm:text-xl font-medium text-gray-500 dark:text-gray-400 mt-2">
-                Fill in the form to start a conversation
-              </p>
+    <section
+      aria-labelledby={`${formId}-heading`}
+      className={`mx-auto w-full max-w-6xl text-slate-100 ${embedded ? "" : "px-4 py-8 sm:px-6 sm:py-12"}`}
+    >
+      <div className="overflow-hidden rounded-3xl border border-white/10 bg-slate-900/90 shadow-xl">
+        <div className="grid lg:grid-cols-2">
+          <div className="flex flex-col p-6 sm:p-10 lg:p-12">
+            <Heading
+              id={`${formId}-heading`}
+              className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl"
+            >
+              Contact
+            </Heading>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-slate-400">
+              For work inquiries or questions about my projects, email me
+              directly or use the form.
+            </p>
 
-              <div className="flex items-center mt-8 text-gray-600 dark:text-gray-400">
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                  className="w-8 h-8 text-gray-500 "
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeWidth="1.5"
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeWidth="1.5"
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <div className="ml-4 text-lg tracking-wide font-semibold w-40">
-                  Israel, Holon
+            <div className="mt-8 space-y-5">
+              <a
+                href="mailto:jenka.katz@gmail.com"
+                className="group flex items-center gap-4 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-400/10 text-blue-300">
+                  <FiMail className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs text-slate-400">Email</p>
+                  <p className="mt-1 break-all text-sm font-medium text-slate-100 transition group-hover:text-blue-300 sm:text-base">
+                    jenka.katz@gmail.com
+                  </p>
                 </div>
-              </div>
-
-              <div className="flex items-center mt-4 text-gray-600 dark:text-gray-400">
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                  className="w-8 h-8 text-gray-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-                <div className="ml-4 text-lg tracking-wide font-semibold w-40">
-                  +972 585599171
+                <FiArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
+              </a>
+              <a
+                href="tel:+972585599171"
+                className="group flex items-center gap-4 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-400/10 text-blue-300">
+                  <FiPhone className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-xs text-slate-400">Phone</p>
+                  <p className="mt-1 text-sm font-medium text-slate-100 transition group-hover:text-blue-300 sm:text-base">
+                    +972 58 559 9171
+                  </p>
                 </div>
-              </div>
-
-              <div className="flex items-center mt-2 text-gray-600 dark:text-gray-400 flex-nowrap min-w-0">
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                  className="w-8 h-8 text-gray-500 flex-shrink-0"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                <div
-                  className="ml-4 text-lg tracking-wide font-semibold min-w-0 truncate cursor-pointer"
-                  title="jenka.katz@gmail.com"
-                >
-                  jenka.katz@gmail.com
+                <FiArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
+              </a>
+              <div className="flex items-center gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-400/10 text-blue-300">
+                  <FiMapPin className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-xs text-slate-400">Based in</p>
+                  <p className="mt-1 text-sm font-medium text-slate-100 sm:text-base">Holon, Israel</p>
                 </div>
               </div>
             </div>
 
-            <form
-              className="p-6 flex flex-col justify-center w-full max-w-lg mx-auto py-10 px-4"
-              onSubmit={handleSubmit}
+            <a
+              href="https://linkedin.com/in/jenya-proviz-katz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex min-h-11 items-center gap-2 self-start text-sm font-medium text-blue-300 transition hover:text-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
-              <div className="flex flex-col">
-                <label htmlFor="name" className="hidden">
-                  Full Name
-                </label>
+              <FiLinkedin className="h-4 w-4" aria-hidden="true" />
+              LinkedIn
+              <FiArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </div>
+
+          <form
+            className="border-t border-white/10 bg-white/[0.03] p-6 sm:p-10 lg:border-l lg:border-t-0 lg:p-12"
+            onSubmit={handleSubmit}
+            aria-labelledby={`${formId}-form-heading`}
+            aria-busy={isSending}
+          >
+            <h2 id={`${formId}-form-heading`} className="text-xl font-semibold text-white">Send a message</h2>
+            <p className="mt-2 text-sm text-slate-400">Fields marked with * are required.</p>
+            <fieldset disabled={isSending} className="mt-6 space-y-5 disabled:opacity-70">
+              <div>
+                <label htmlFor={`${formId}-name`} className="text-sm font-medium text-slate-300">Full name *</label>
                 <input
-                  type="name"
-                  name="name"
-                  id="name"
-                  placeholder="Full Name"
-                  value={formData.name}
-                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none"
-                  onChange={handleChange}
+                  type="text" name="name" id={`${formId}-name`}
+                  autoComplete="name" required placeholder="Your name"
+                  value={formData.name} onChange={handleChange} className={inputClassName}
                 />
               </div>
-
-              <div className="flex flex-col mt-2">
-                <label htmlFor="email" className="hidden">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none"
-                  onChange={handleChange}
-                />
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="min-w-0">
+                  <label htmlFor={`${formId}-email`} className="text-sm font-medium text-slate-300">Email *</label>
+                  <input
+                    type="email" name="email" id={`${formId}-email`}
+                    autoComplete="email" required placeholder="you@example.com"
+                    value={formData.email} onChange={handleChange} className={inputClassName}
+                  />
+                </div>
+                <div className="min-w-0">
+                  <label htmlFor={`${formId}-tel`} className="text-sm font-medium text-slate-300">Phone *</label>
+                  <input
+                    type="tel" name="tel" id={`${formId}-tel`}
+                    autoComplete="tel" required placeholder="+972 ..."
+                    value={formData.tel} onChange={handleChange} className={inputClassName}
+                  />
+                </div>
               </div>
-
-              <div className="flex flex-col mt-2">
-                <label htmlFor="tel" className="hidden">
-                  Number
-                </label>
-                <input
-                  type="tel"
-                  name="tel"
-                  id="tel"
-                  placeholder="Telephone Number"
-                  value={formData.tel}
-                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="flex flex-col mt-2">
-                <label htmlFor="message" className="hidden">
-                  Message
-                </label>
+              <div>
+                <label htmlFor={`${formId}-message`} className="text-sm font-medium text-slate-300">Message</label>
                 <textarea
-                  name="message"
-                  id="message"
-                  rows="4"
-                  placeholder="Your Message"
-                  value={formData.message}
-                  className="w-100 mt-2 py-3 px-3 rounded-lg bg-gray-200 dark:bg-gray-400 border border-gray-400 dark:border-gray-700 text-gray-800 font-semibold placeholder-gray-500 dark:placeholder-gray-700 focus:border-indigo-500 focus:outline-none resize-none"
-                  onChange={handleChange}
-                ></textarea>
+                  name="message" id={`${formId}-message`} rows={4}
+                  placeholder="Your message"
+                  value={formData.message} onChange={handleChange}
+                  className={`${inputClassName} resize-y`}
+                />
               </div>
-
               <button
                 type="submit"
-                className="md:w-32 bg-gray-800 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded-lg mt-3 hover:bg-gray-500 transition ease-in-out duration-300"
+                className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 disabled:cursor-wait"
               >
-                Submit
+                <FiSend className="h-4 w-4" aria-hidden="true" />
+                {isSending ? "Sending..." : "Send message"}
               </button>
-            </form>
-          </div>
+            </fieldset>
+          </form>
         </div>
       </div>
-    </div>
+
+      {!embedded && (
+        <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/90">
+          <div className="flex items-center gap-2 px-6 py-4 text-sm text-slate-300">
+            <FiMapPin className="h-4 w-4 text-blue-300" aria-hidden="true" />
+            Holon, Israel
+          </div>
+          <iframe
+            title="Location map of Holon, Israel"
+            src="https://maps.google.com/maps?q=Holon%2C%20Israel&z=12&output=embed"
+            className="h-56 w-full border-0 sm:h-64"
+            allowFullScreen
+            loading="lazy"
+          />
+        </div>
+      )}
+    </section>
   );
 };
 

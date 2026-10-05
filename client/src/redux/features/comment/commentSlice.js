@@ -28,7 +28,7 @@ export const getPostComments = createAsyncThunk(
   }
 );
 
-export const commentSlice = createSlice({
+const commentSlice = createSlice({
   name: "comment",
   initialState,
   reducers: {},

@@ -9,19 +9,12 @@ const isPrivilegedAdmin = (username) =>
   username?.trim().toLowerCase() === ADMIN_USERNAME;
 
 // Function to validate password
-export const validatePassword = (password) => {
+const validatePassword = (password) => {
   return passwordPattern.test(password);
 };
 
-// Function to hash the password
-export const hashPassword = async (password) => {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
-};
-
 // Function to validate the password
-export const validatePasswordWithHash = async (
+const validatePasswordWithHash = async (
   plainPassword,
   hashedPassword
 ) => {
@@ -126,7 +119,7 @@ export const login = async (req, res) => {
     res.json({
       token,
       user,
-      message: "You have successfully logged in.",
+      message: "Signed in.",
     });
   } catch (error) {
     res.json({ message: "Error during authentication." });

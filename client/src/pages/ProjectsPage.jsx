@@ -21,7 +21,6 @@ const techIcons = {
   "Socket.io": <span className="text-gray-300">🔌</span>,
   JWT: <span className="text-yellow-300">🔐</span>,
   "Chart.js": <span className="text-pink-400">📊</span>,
-  "Weather API": <span className="text-blue-300">🌤️</span>,
   Redis: <span className="text-red-500">⚡</span>,
 };
 
@@ -127,11 +126,11 @@ export const ProjectsPage = () => {
     <div className="w-full max-w-7xl mx-auto py-10 px-4">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-          My Projects
+          Projects
         </h1>
         <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-          Here's a showcase of my recent work and projects. Each project represents a unique challenge
-          and demonstrates different aspects of my development skills.
+          Client work, course projects, and independent applications.
+          Source code and live sites are linked where available.
         </p>
       </div>
 
@@ -410,22 +409,6 @@ export const ProjectsPage = () => {
         </div>
       )}
 
-      <div className="text-center mt-16 py-8 bg-gray-800 rounded-lg">
-        <h3 className="text-2xl font-semibold text-white mb-4">
-          Interested in Working Together?
-        </h3>
-        <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-          I'm always open to discussing new opportunities and interesting projects.
-          Feel free to reach out if you'd like to collaborate!
-        </p>
-        <a
-          href="/contact"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-300"
-        >
-          <span>Get In Touch</span>
-          <FiExternalLink />
-        </a>
-      </div>
     </div>
   );
 };

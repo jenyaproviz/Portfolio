@@ -2,6 +2,11 @@ import { projectsData } from "./projectsData";
 
 const STORAGE_KEY = "portfolio_projects";
 const PROJECTS_WITH_SYNCED_METADATA = new Set([2, 4, 5, 6]);
+const LEGACY_DESCRIPTIONS = new Map([
+  [1, "A full-stack blog website built as a final project with React and Node.js. Features user authentication, post management, dark theme, and responsive design."],
+  [3, "Marketing website for a musician, built as a final project, with a responsive layout, custom sections, and lightweight frontend interactions."],
+  [7, "Full-stack job search application with a React frontend, TypeScript and Express API, and an MCP-based AI service for smarter search and analysis workflows."],
+]);
 const HIDDEN_PROJECT_IDS = new Set(
   projectsData.filter((project) => project.hidden).map((project) => project.id)
 );
@@ -45,7 +50,8 @@ const mergeProjectValues = (defaultProject, storedProject) => ({
     : storedProject?.title?.trim()
     ? storedProject.title
     : defaultProject.title,
-  description: PROJECTS_WITH_SYNCED_METADATA.has(defaultProject.id)
+  description: PROJECTS_WITH_SYNCED_METADATA.has(defaultProject.id) ||
+    storedProject?.description === LEGACY_DESCRIPTIONS.get(defaultProject.id)
     ? defaultProject.description
     : storedProject?.description?.trim()
     ? storedProject.description

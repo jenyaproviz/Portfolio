@@ -46,7 +46,7 @@ export const getMe = createAsyncThunk("auth/getMe", async () => {
   }
 });
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
