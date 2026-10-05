@@ -85,7 +85,7 @@ const ContactMePage = ({ embedded = false }) => {
                 <FiArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
               </a>
               <a
-                href="tel:+972585599171"
+                href="tel:+972508559917"
                 className="group flex items-center gap-4 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
               >
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-400/10 text-blue-300">
@@ -94,7 +94,7 @@ const ContactMePage = ({ embedded = false }) => {
                 <div>
                   <p className="text-xs text-slate-400">Phone</p>
                   <p className="mt-1 text-sm font-medium text-slate-100 transition group-hover:text-blue-300 sm:text-base">
-                    +972 58 559 9171
+                    +972 50 855 9917
                   </p>
                 </div>
                 <FiArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
